@@ -9,14 +9,12 @@ import Model
 $digit =        [0-9]               --digits
 $alpha =        [a-zA-Z]            --Letters
 $whitespace =   [ \t\n\r]           --whitespacers and stringoperators
-$ident =        [a-zA-Z0-9\+\-]+    --Patternmatch for the identifierstring
+$ident =        [a-zA-Z0-9\+\-]    --Patternmatch for the identifierstring
 
 tokens :-
-
-
   --handle whitespace and comments
-  $white+          ;
-  "--".*            ; 
+  $white+            ;  --handle whitespaces
+  "--".*              ; --handle comments
 
   --handle the tokens
   \-\>              {\s -> TArrow }
@@ -40,7 +38,7 @@ tokens :-
   Asteroid          {\s -> TAsteroid}
   Boundary          {\s -> TBoundary}
   \_                {\s -> TWildcard}
-  $ident            {\s -> TIdent s}
+  $ident+            {\s -> TIdent s}
 
 
 

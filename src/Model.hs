@@ -2,9 +2,9 @@ module Model where
 
 
 -- Exercise 1
-data Token
-    = TArrow            -- "->"
-    | TDot          -- "."
+
+data Token    = TArrow            -- "->"
+    | TDot              -- "."
     | TComma            -- ","
     | TGo               -- "go"
     | TTake             -- "take"
