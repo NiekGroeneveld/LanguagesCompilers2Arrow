@@ -29,7 +29,7 @@ import Model
   Asteroid    { TAsteroid}
   Boundary    { TBoundary}
   '_'         { TWildcard}
-  Identifier  {Identifier $$}
+  Identifier  { TIdentifier $$}
 
 
 
@@ -50,7 +50,7 @@ Cmd : go                          {Go}
     | nothing                     {Nothing}
     | turn Dir                    {Turn $2}
     | case Dir of Alts            {Case $2 $3}
-    | Identifier                  {Call $2}
+    | Identifier                  {Call $1}
 
 Dir : left                        {LeftDir}
     | right                       {RightDir}
