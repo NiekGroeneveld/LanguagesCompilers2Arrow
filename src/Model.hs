@@ -1,5 +1,7 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
 module Model where
-import GHC.Generics (DecidedStrictness)
+
 -- Exercise 1
 data Token    = TArrow            -- "->"
     | TDot              -- "."
@@ -22,7 +24,7 @@ data Token    = TArrow            -- "->"
     | TAsteroid         -- "Asteroid"
     | TBoundary         -- "Boundary"
     | TWildcard         -- "_"
-    | TIdent String     -- Represents an identifier
+    | TIdentifier String     -- Represents an identifier
     deriving (Show, Eq)
 
 
@@ -31,7 +33,9 @@ data Token    = TArrow            -- "->"
 data Program = Program [Rule] deriving Show
 
 -- A rule couples an identifier with a sequence of commands
-data Rule = Rule Ident [Cmd] deriving Show
+data Rule = Rule Identifier Cmds deriving Show
+
+data Cmds = Cmds [Cmd] deriving Show
 
 data Cmd 
     = Go                --Move forward
@@ -39,15 +43,17 @@ data Cmd
     | Mark              --Leave a lambda at the current position
     | NothingCmd        --Do Nothing
     | Turn Dir          --Turn in a Direction
-    | Case Dir [Alt]    --Case analysis on a direciton
-    | Call Ident        --Call antoher rule
+    | Case Dir Alts     --Case analysis on a direciton
+    | Call Identifier   --Call antoher rule
     deriving Show 
 
 -- Direction in which Arrow can turn or Sens
 data Dir = LeftDir | RightDir | FrontDir deriving Show
 
 -- Alternatives for a case construct
-data Alt = Alt Pat [Cmd] deriving Show
+data Alts = Alts Alt deriving Show
+
+data Alt = Alt Pat Cmds deriving Show
 
 --Patterns for case analysis
 data Pat
@@ -60,7 +66,7 @@ data Pat
     deriving Show   
 
 --Identifier for naming rules
-type Ident = String
+type Identifier = String
 
 
 

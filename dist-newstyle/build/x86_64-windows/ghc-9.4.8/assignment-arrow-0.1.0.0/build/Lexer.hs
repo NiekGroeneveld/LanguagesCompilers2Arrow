@@ -831,7 +831,7 @@ alex_action_19 = \s -> TDebris
 alex_action_20 = \s -> TAsteroid
 alex_action_21 = \s -> TBoundary
 alex_action_22 = \s -> TWildcard
-alex_action_23 = \s -> TIdent s
+alex_action_23 = \s -> TIdentifier s
 
 #define ALEX_GHC 1
 #define ALEX_NOPRED 1

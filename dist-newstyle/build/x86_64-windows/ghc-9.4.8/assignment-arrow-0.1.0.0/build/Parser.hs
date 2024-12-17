@@ -54,10 +54,10 @@ happyOutTok x = Happy_GHC_Exts.unsafeCoerce# x
 
 
 {-# NOINLINE happyTokenStrings #-}
-happyTokenStrings = ["x","%eof"]
+happyTokenStrings = ["\"->\"","'.'","','","go","take","mark","nothing","turn","case","of","end","left","right","front","';'","Empty","Lambda","Debris","Asteroid","Boundary","'_'","' '","%eof"]
 
 happyActOffsets :: HappyAddr
-happyActOffsets = HappyA# "\x00\x00\x00\x00\x00\x00\x00\x00\xfe\xff\xff\xff\x00\x00\x00\x00"#
+happyActOffsets = HappyA# "\x00\x00\x00\x00\x00\x00\x00\x00\xe9\xff\xff\xff\x00\x00\x00\x00"#
 
 happyGotoOffsets :: HappyAddr
 happyGotoOffsets = HappyA# "\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
@@ -66,10 +66,10 @@ happyDefActions :: HappyAddr
 happyDefActions = HappyA# "\xfe\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00"#
 
 happyCheck :: HappyAddr
-happyCheck = HappyA# "\xff\xff\xff\xff\x03\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff"#
+happyCheck = HappyA# "\xff\xff\xff\xff\x18\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff"#
 
 happyTable :: HappyAddr
-happyTable = HappyA# "\x00\x00\x00\x00\xff\xff\xff\xff\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
+happyTable = HappyA# "\x00\x00\x00\x00\xff\xff\xff\xff\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
 happyReduceArr = Happy_Data_Array.array (1, 1) [
         (1 , happyReduce_1)
@@ -81,7 +81,7 @@ happyRuleArr = HappyA# "\x00\x00\x00\x00\x00\x00\x00\x00"#
 happyCatchStates :: [Happy_Prelude.Int]
 happyCatchStates = []
 
-happy_n_terms = 4 :: Happy_Prelude.Int
+happy_n_terms = 25 :: Happy_Prelude.Int
 happy_n_nonterms = 1 :: Happy_Prelude.Int
 
 happy_n_starts = 1 :: Happy_Prelude.Int
@@ -94,7 +94,28 @@ happyReduction_1  =  happyIn5
         )
 
 happyTerminalToTok term = case term of {
-        Token -> 2#;
+        TArrow -> 2#;
+        TDot -> 3#;
+        TComma -> 4#;
+        TGo -> 5#;
+        TTake -> 6#;
+        TMark -> 7#;
+        TNothing -> 8#;
+        TTurn -> 9#;
+        TCase -> 10#;
+        TOf -> 11#;
+        TEnd -> 12#;
+        TLeft -> 13#;
+        TRight -> 14#;
+        TFront -> 15#;
+        TSemicolon -> 16#;
+        TEmpty -> 17#;
+        TLambda -> 18#;
+        TDebris -> 19#;
+        TAsteroid -> 20#;
+        TBoundary -> 21#;
+        TWildcard -> 22#;
+        TIdentifier  happy_dollar_dollar -> 23#;
         _ -> -1#;
         }
 {-# NOINLINE happyTerminalToTok #-}
@@ -103,9 +124,9 @@ happyLex kend  _kmore []       = kend notHappyAtAll []
 happyLex _kend kmore  (tk:tks) = kmore (happyTerminalToTok tk) tk tks
 {-# INLINE happyLex #-}
 
-happyNewToken action sts stk = happyLex (\tk -> happyDoAction 3# notHappyAtAll action sts stk) (\i tk -> happyDoAction i tk action sts stk)
+happyNewToken action sts stk = happyLex (\tk -> happyDoAction 24# notHappyAtAll action sts stk) (\i tk -> happyDoAction i tk action sts stk)
 
-happyReport 3# tk explist resume tks = happyReport' tks explist resume
+happyReport 24# tk explist resume tks = happyReport' tks explist resume
 happyReport _ tk explist resume tks = happyReport' (tk:tks) explist (\tks -> resume (Happy_Prelude.tail tks))
 
 
