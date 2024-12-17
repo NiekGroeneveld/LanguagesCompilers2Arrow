@@ -38,7 +38,7 @@ tokens :-
   Asteroid          {\s -> TAsteroid}
   Boundary          {\s -> TBoundary}
   \_                {\s -> TWildcard}
-  $ident+            {\s -> TIdent s}
+  $ident+           {\s -> TIdent s}
 
 
 
