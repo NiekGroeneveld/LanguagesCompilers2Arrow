@@ -36,28 +36,29 @@ import Model
 
 %%
 
-Program : Rule '.'                  {Program [$1]}
-        | Program '.' Rule '.'        {Program $3 : $1}
+Program : Program '.' Rule           {$3 : $1}
+        | Rule '.'                   {[$1]}
+     
+Rule : Identifier "->" Cmds          {Rule $1 $3}
 
-Rule : Identifier "->" Cmds       {Rule $1 $3}
-
-Cmds : Cmd                        {Cmds [$1]}
-     | Cmds ',' Cmd                 {Cmds $3 : $1} 
+Cmds : Cmds ',' Cmd                  {$3 : $1}
+     | Cmd                           {[$1]} 
 
 Cmd : go                          {Go}
     | take                        {Take}
     | mark                        {Mark}
     | nothing                     {Nothing}
     | turn Dir                    {Turn $2}
-    | case Dir of Alts            {Case $2 $3}
+    | case Dir of Alts            {Case $2 $4}
     | Identifier                  {Call $1}
 
 Dir : left                        {LeftDir}
     | right                       {RightDir}
     | front                       {FrontDir}
 
-Alts : Alt end                    {Alts [$1]}
-      |Alts ';' Alt end             {Alsts $3 : $1}
+
+Alts : Alts ';' Alt end           {$3 : $1}
+      |Alt                        {[$1]}
 
 Alt : Pat "->" Cmds               {Alt $1 $3}
 
@@ -72,7 +73,5 @@ Pat : Empty                       {EmptyPat}
 
 
 {
-
 happyError _ = error "parse error"
-
 }

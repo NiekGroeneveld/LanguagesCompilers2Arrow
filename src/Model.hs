@@ -1,5 +1,4 @@
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-{-# HLINT ignore "Use newtype instead of data" #-}
+
 module Model where
 
 -- Exercise 1
@@ -30,12 +29,12 @@ data Token    = TArrow            -- "->"
 
 -- Exercise 2
 --A program is a list of rules
-data Program = Program [Rule] deriving Show
+type Program = [Rule]
 
 -- A rule couples an identifier with a sequence of commands
 data Rule = Rule Identifier Cmds deriving Show
 
-data Cmds = Cmds [Cmd] deriving Show
+type Cmds = [Cmd]
 
 data Cmd 
     = Go                --Move forward
@@ -51,7 +50,7 @@ data Cmd
 data Dir = LeftDir | RightDir | FrontDir deriving Show
 
 -- Alternatives for a case construct
-data Alts = Alts Alt deriving Show
+type Alts = [Alt] 
 
 data Alt = Alt Pat Cmds deriving Show
 
