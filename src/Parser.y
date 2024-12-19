@@ -36,8 +36,9 @@ import Model
 
 %%
 
-Program : Program '.' Rule           {$3 : $1}
-        | Rule '.'                   {[$1]}
+Program : {- empty -}                { [] }
+        | Program '.' Rule           {$3 : $1}
+                 
      
 Rule : Identifier "->" Cmds          {Rule $1 $3}
 
@@ -57,8 +58,9 @@ Dir : left                        {LeftDir}
     | front                       {FrontDir}
 
 
-Alts : Alts ';' Alt end           {$3 : $1}
-      |Alt                        {[$1]}
+Alts : Alt                        { [$1] }
+     | Alts ';' Alt end           {$3 : $1}
+      
 
 Alt : Pat "->" Cmds               {Alt $1 $3}
 
