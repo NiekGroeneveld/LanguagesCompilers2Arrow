@@ -36,19 +36,19 @@ import Model
 
 %%
 
-Program : {- empty -}                { [] }
-        | Program '.' Rule           {$3 : $1}
+Program : Rule                      { [$1] }
+        | Program Rule           { $1 ++ [$2]} --To take the 
                  
      
-Rule : Identifier "->" Cmds          {Rule $1 $3}
+Rule : Identifier "->" Cmds '.'         {Rule $1 $3}
 
-Cmds : Cmds ',' Cmd                  {$3 : $1}
+Cmds : Cmds ',' Cmd                  {$1 ++ [$3]}
      | Cmd                           {[$1]} 
 
 Cmd : go                          {Go}
     | take                        {Take}
     | mark                        {Mark}
-    | nothing                     {Nothing}
+    | nothing                     {NothingCmd}
     | turn Dir                    {Turn $2}
     | case Dir of Alts            {Case $2 $4}
     | Identifier                  {Call $1}
@@ -59,7 +59,7 @@ Dir : left                        {LeftDir}
 
 
 Alts : Alt                        { [$1] }
-     | Alts ';' Alt end           {$3 : $1}
+     | Alts ';' Alt end           {$1 ++ [$3]} --Reverse the list again so we can work left
       
 
 Alt : Pat "->" Cmds               {Alt $1 $3}

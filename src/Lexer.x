@@ -8,7 +8,7 @@ import Model
 
 $digit =        [0-9]               --digits
 $alpha =        [a-zA-Z]            --Letters
-$ident =        [a-zA-Z0-9\+\-]    --Patternmatch for the identifierstring
+
 
 tokens :-
   --handle whitespace and comments
@@ -37,7 +37,7 @@ tokens :-
   Asteroid          {\s -> TAsteroid}
   Boundary          {\s -> TBoundary}
   \_                {\s -> TWildcard}
-  $ident+           {\s -> TIdentifier s}
+  [$alpha $digit \+ \-]+    {\s -> TIdentifier s}   -- Modified this line
 
 
 
