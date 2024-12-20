@@ -2,7 +2,7 @@ module Interpreter where
 
 import ParseLib
 
-import Data.Map (Map)
+import Data.Map (Map, findMax, lookup)
 import qualified Data.Map as L
 
 import Data.Char (isSpace)
@@ -53,7 +53,28 @@ contentsTable =  [ (Empty   , '.' )
 
 -- Exercise 7
 printSpace :: Space -> String
-printSpace = undefined
+printSpace s =
+  let size = findSize s
+      spaceArray = [printrow s size size | size <- [0..size]]
+  in  concat spaceArray 
+
+
+printrow :: Space -> Int -> Int -> String
+printrow s y size =
+  let row = [printpos s (x,y) | x <- [0..size]]
+  in  concat row
+
+printpos :: Space -> Pos -> String
+printpos s pos  = case Data.Map.lookup pos s  of
+  Just Empty -> "."
+  Just Lambda -> "\\"
+  Just Debris -> "%"
+  Just Asteroid -> "O"
+  Just Boundary -> "#"
+  Nothing -> "error"
+
+findSize :: Space -> Int
+findSize s = fst $ fst (findMax s) 
 
 
 -- These three should be defined by you
