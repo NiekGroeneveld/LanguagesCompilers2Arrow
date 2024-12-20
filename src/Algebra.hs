@@ -14,7 +14,7 @@ import Data.List
 --Our recursive datatypes are are Program which has multiple ocmmands,
 --Alt which can have Pat and Cmds
 --
--- First let's  define the type aliases for your algebra
+
 type ProgramAlgebra a = [a] -> a
 type RuleAlgebra a = Identifier -> [a] -> a
 type CmdAlgebra a =
@@ -107,6 +107,8 @@ isCompletePatternSet pats
 getPatternsFromAlts :: Alts -> [Pat]
 getPatternsFromAlts = map (\(Alt pat _) -> pat)
 
+
+--This one doesn't work because of the type signature fault made in the fold. Don't know how to fix
 validateSetsOfAlternatives :: Program -> Bool
 validateSetsOfAlternatives = foldProgram
     and                         --All must be true so all rules must give true so and operator

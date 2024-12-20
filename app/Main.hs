@@ -1,3 +1,6 @@
+--Niek Groeneveld 1448889 
+--Seán Hofstra 
+
 module Main where
 
 import Algebra
@@ -32,3 +35,4 @@ main = do
   putStrLn ""
   print arr
 
+  
