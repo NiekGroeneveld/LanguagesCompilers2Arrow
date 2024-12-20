@@ -66,12 +66,12 @@ printrow s y size =
 
 printpos :: Space -> Pos -> String
 printpos s pos  = case Data.Map.lookup pos s  of
-  Just Empty -> "."
-  Just Lambda -> "\\"
-  Just Debris -> "%"
+  Just Empty    -> "."
+  Just Lambda   -> "\\"
+  Just Debris   -> "%"
   Just Asteroid -> "O"
   Just Boundary -> "#"
-  Nothing -> "error"
+  Nothing       -> "error"
 
 findSize :: Space -> Int
 findSize s = fst $ fst (findMax s) 
@@ -93,7 +93,8 @@ data Step =  Done  Space Pos Heading
 
 -- | Exercise 8
 toEnvironment :: String -> Environment
-toEnvironment = undefined
+toEnvironment spaceString = undefined
+
 
 -- | Exercise 9
 step :: Environment -> ArrowState -> Step

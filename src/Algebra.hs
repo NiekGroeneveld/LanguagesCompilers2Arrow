@@ -7,74 +7,48 @@ import Control.Applicative (Alternative)
 
 
 -- Exercise 5
+--From introduction to chater seven we find each recursive datatype should have a fold
+--Each constructor has a have a corresponding function
+--Our recursive datatypes are are Program which has multiple ocmmands,
+--Alt which can have Pat and Cmds
+--
+-- First let's  define the type aliases for your algebra
+type ProgramAlgebra a = [a] -> a
+type RuleAlgebra a = Identifier -> [a] -> a
+type CmdAlgebra a = 
+    ( a                     --Go
+    , a                     --Take
+    , a                     --Mark
+    , a                     --NothingCmd
+    , Dir -> a              --Turn
+    , Dir -> [a] -> a       --Case
+    , Identifier -> a       --Call
+    )
 
+type AltAlgebra a = Pat -> [a] -> a
 
+--Folds
+foldProgram :: ProgramAlgebra a -> RuleAlgebra a -> CmdAlgebra a -> AltAlgebra a -> Program -> a
+foldProgram pAlg rAlg cAlg aAlg = pAlg. map(foldRule rAlg cAlg aAlg)
 
-type ProgramAlgebra p = (PAlgebra p,    
-                        RuleAlgebra p, 
-                        CmdsAlgebra p, 
-                        CommandAlgebra p,  
-                        AltsAlgebra p, 
-                        AltAlgebra p, 
-                        PatternAlgebra p, 
-                        DirectionAlgebra p
-                        )
+foldRule :: RuleAlgebra a -> CmdAlgebra a -> AltAlgebra a -> Rule -> a
+foldRule rAlg cAlg aAlg (Rule identifier cmds) =
+    rAlg identifier (map(foldCmd cAlg aAlg) cmds)
 
-foldProgram :: ProgramAlgebra p -> Program -> p
-foldProgram = undefined
+foldCmd :: CmdAlgebra a -> AltAlgebra a -> Cmd -> a
+foldCmd cAlg@(go, take, mark, nothing, turn, case_, call) aAlg cmd = 
+    case cmd of
+        Go -> go
+        Take -> take
+        Mark -> mark
+        NothingCmd -> nothing
+        Turn dir -> turn dir
+        Case dir alts -> case_ dir (map (foldAlt aAlg cAlg) alts)
+        Call ident -> call ident
 
+foldAlt :: AltAlgebra a -> CmdAlgebra a-> Alt -> a
+foldAlt aAlg cAlg (Alt pat cmds) = aAlg pat $ map(foldCmd cAlg aAlg) cmds
 
-
-
-type PAlgebra p = [Rule] -> p
-type RuleAlgebra r = (Identifier -> Cmds -> r)
-type CmdsAlgebra cs = [Cmd]
-type AltsAlgebra a = [Alt]
-type AltAlgebra a = (Pat -> Cmds -> a)
-
-type CommandAlgebra c = (c          --Go
-                        ,c          --Take
-                        ,c          --Mark
-                        ,c          --Nothing
-                        ,Dir -> c   --Turn
-                        ,Dir -> Alts -> c   --Case
-                        ,Identifier -> c    --Identifier
-                    )
-
-foldCmd :: CommandAlgebra a -> Cmd -> a
-foldCmd (go, take, mark, nothing, turn, case', call) = f where
-    f Go = go
-    f Take = take
-    f Mark = mark
-    f NothingCmd = nothing
-    f (Turn d) = turn d             --should do something with these
-    f (Case d alts) = case' d alts  --should do something here
-    f (Call s) = call s --ye
-
-
-type PatternAlgebra p = ( p --empty
-                        , p --lambda
-                        , p --debris
-                        , p --asteroid
-                        , p --boundary
-                        , p --wildcard
-                        )
-foldPattern :: PatternAlgebra a -> Pat -> a
-foldPattern (empty, lambda, debris, asteroid, boundary, wildcard) = f where
-    f EmptyPat = empty
-    f LambdaPat = lambda
-    f DebrisPat = debris
-    f AsteroidPat = asteroid
-    f BoundaryPat = boundary
-    f WildcardPat = wildcard
-
-
-type DirectionAlgebra d = (d, d, d)
-foldDir :: DirectionAlgebra d -> Dir -> d
-foldDir (left, right, front) = f where
-    f RightDir = right
-    f LeftDir = left
-    f FrontDir = front
 
 
 -- Exercise 6
