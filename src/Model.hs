@@ -62,7 +62,7 @@ data Pat
     | AsteroidPat       --Asteroid pattern
     | BoundaryPat       --Boundary pattern
     | WildcardPat       --Wildcard pattern
-    deriving Show   
+    deriving (Show, Eq)   
 
 --Identifier for naming rules
 type Identifier = String
